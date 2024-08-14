@@ -10,7 +10,8 @@ RUN npm install
 
 # Copy the JavaScript file to the container
 COPY convert-file.js .
-COPY test-cases.js .
+COPY test-cases-output.js .
+COPY syncToPostmanCloud.js .
 
 # Specify the command to run the app
 CMD ["node", "convert-file.js"]

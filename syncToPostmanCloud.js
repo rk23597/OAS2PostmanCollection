@@ -67,7 +67,7 @@ const updateCollection = async (collectionId, collection, apiKey) => {
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Define the main function as an async function
-async function main(collectionName , collectionId , apiKey ) {
+async function syncToPostmanCloud(collectionName , collectionId , apiKey ) {
     try {
         await sleep(50000); 
         const collectionResponse = await getCollection(collectionId , apiKey);
@@ -82,5 +82,5 @@ async function main(collectionName , collectionId , apiKey ) {
 
 // Export the function
 module.exports = {
-    main
+    syncToPostmanCloud
 };
