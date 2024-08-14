@@ -34,24 +34,23 @@ const addScriptsToRequests = (items) => {
 };
 
 
-const getCollection = async (collectionId, apiKey) => {
-    const response = await axios.get(`https://api.getpostman.com/collections/${collectionId}`, {
-        headers: { 'X-Api-Key': apiKey }
-    });
-    return response.data.collection;
-};
-
-const updateCollection = async (collectionId, collection, apiKey) => {
+const updateCollection = async (openApiSpecFileNameWithTime, psCollection, apiKey) => {
     const options = {
-        method: 'PUT',
-        url: `https://api.getpostman.com/collections/${collectionId}`,
+        method: 'POST',
+        url: 'https://api.getpostman.com/collections',
         headers: {
             'X-Api-Key': apiKey,
             'Content-Type': 'application/json'
         },
-        data: {
-            collection
-        }
+        data: JSON.stringify({
+            collection: {
+                ...psCollection,
+                info: {
+                    ...psCollection.info,
+                    name: openApiSpecFileNameWithTime
+                }
+            }
+        })
     };
 
     await axios(options);
@@ -67,13 +66,13 @@ const updateCollection = async (collectionId, collection, apiKey) => {
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Define the main function as an async function
-async function syncToPostmanCloud(collectionName , collectionId , apiKey ) {
+async function syncToPostmanCloud(openApiSpecFileNameWithTime, psCollection , apiKey ) {
     try {
-        await sleep(50000); 
-        const collectionResponse = await getCollection(collectionId , apiKey);
-        addScriptsToRequests(collectionResponse.item); // Start with the root items
+        await sleep(30000); 
+        addScriptsToRequests(psCollection.item); // Start with the root items
+        console.log(JSON.stringify(psCollection))
      
-        await updateCollection(collectionId, collectionResponse, apiKey);
+        await updateCollection(openApiSpecFileNameWithTime, psCollection, apiKey);
     } catch (error) {
         console.error ("---------------------- ERROR occured while creating Test Scritps ---------------------------------------........");
         console.error('Error updating collection:', error.response ? error.response.data : error.message);

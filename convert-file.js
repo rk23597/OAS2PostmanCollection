@@ -40,39 +40,9 @@ converter.convert({ type: 'string', data: openApiSpec }, {}, (err, conversionRes
                 sleep(2000);
 
                 const postmanCollection = conversionResult.output[0].data;
-                console.log ("---------------------- Uploading Postman Collections to the Postman Cloud ------------------------------........");
-                sleep(2000);
-
-                const options = {
-                    method: 'POST',
-                    url: 'https://api.getpostman.com/collections',
-                    headers: {
-                        'X-Api-Key': apiKey,
-                        'Content-Type': 'application/json'
-                    },
-                    data: JSON.stringify({
-                        collection: {
-                            ...postmanCollection,
-                            info: {
-                                ...postmanCollection.info,
-                                name: openApiSpecFileNameWithTime
-                            }
-                        }
-                    })
-                };
-            
-                // Make the request to import the collection
-                axios(options)
-                    .then(response => {
-                        console.log ("---------------------- Successfully Uploaded Postman Collections to the Postman Cloud ------------------........");
-                        sleep(2000);
-                        console.log ("---------------------- Creating Test Scritps for all the APIs ------------------------------------------........");            
-                        collectionId = response.data.collection.id ;
-                        syncToPostmanCloud(openApiSpecFileNameWithTime, collectionId, apiKey);
-                    })
-                    .catch(error => {
-                        console.error('Error importing collection:', error.response.data);
-                    }); 
+                console.log ("---------------------- Creating Test Scritps for all the APIs ------------------------------------------........");            
+                syncToPostmanCloud(openApiSpecFileNameWithTime, postmanCollection, apiKey);
+    
 
             }            
         }else{
