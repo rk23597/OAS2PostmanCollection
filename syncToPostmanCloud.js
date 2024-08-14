@@ -68,10 +68,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // Define the main function as an async function
 async function syncToPostmanCloud(openApiSpecFileNameWithTime, psCollection , apiKey ) {
     try {
-        await sleep(30000); 
-        addScriptsToRequests(psCollection.item); // Start with the root items
-        console.log(JSON.stringify(psCollection))
-     
+        addScriptsToRequests(psCollection.item); // Start with the root items     
         await updateCollection(openApiSpecFileNameWithTime, psCollection, apiKey);
     } catch (error) {
         console.error ("---------------------- ERROR occured while creating Test Scritps ---------------------------------------........");
